@@ -1,0 +1,39 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: medzi_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: medzi_application
+          app: medzi
+          __path__: /home/ubuntu/medzi/log-evo/gunicorn.log
+
+  - job_name: medzi_app_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: medzi_application
+          app: medzi_app
+          __path__: /home/ubuntu/medzi/log-evo/app.log*
+
+  - job_name: medzi_legacy_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: medzi_application
+          app: medzi_legacy
+          __path__: /home/ubuntu/medzi/log/app.log*
+
+
